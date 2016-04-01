@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HelloTest</string>
+    <string name="url_tag">url_tag</string>
+    <string name="index_tag">index_tag</string>
+    <string name="wid_tag">wid_tag</string>
+    <string name="hei_tag">hei_tag</string>
+
+</resources>
