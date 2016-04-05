@@ -7,7 +7,7 @@ import android.view.View;
  * @author andy.liu 
  * the base item holder for all the listview
  */
-public abstract class BaseListItemHolder {
+public abstract class BaseListItemHolder<Source> {
     /**
      * create a new class to return , for list adapter
      * every item should has its item holder
@@ -26,8 +26,8 @@ public abstract class BaseListItemHolder {
     public abstract void findView(View v);
     /**
      * set the resource for the item
-     * @param obj the item resource holder
+     * @param source the item resource holder
      */
-    public abstract void setViewResource(Object obj);
+    public abstract void setViewResource(Source source);
 
 }

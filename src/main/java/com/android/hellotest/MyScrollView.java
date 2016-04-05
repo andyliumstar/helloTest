@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -38,11 +39,11 @@ public class MyScrollView extends ScrollView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private ArrayList<Object> mResourceList = null;
+    private ArrayList<String> mResourceList = null;
     private LinkedList<ImageView> mImageViewList = null;
     private LinkedList<ImageView> mImageViewListReuse = null;
     LinearLayout.LayoutParams mParams = null;
-    public void initView(ArrayList<Object> resourceList){
+    public void initView(ArrayList<String> resourceList){
         mResourceList = resourceList;
         mImageViewList = new LinkedList<ImageView>();
         mImageViewListReuse = new LinkedList<ImageView>();
@@ -62,7 +63,7 @@ public class MyScrollView extends ScrollView {
 
         Log.d(TAG, "loadMoreImages:" + j);
         while(i<j && i < mResourceList.size()){
-            final String url = (String)mResourceList.get(i);
+            final String url = mResourceList.get(i);
 
             if(mImageViewListReuse.isEmpty()){
                 imageView = new ImageView(getContext());
@@ -102,7 +103,7 @@ public class MyScrollView extends ScrollView {
 
         Log.d(TAG, "loadMoreImages:" + j);
         while(i >=0 && i>j){
-            final String url = (String)mResourceList.get(i);
+            final String url = mResourceList.get(i);
 
             if(mImageViewListReuse.isEmpty()){
                 imageView = new ImageView(getContext());
@@ -121,7 +122,6 @@ public class MyScrollView extends ScrollView {
                     .loadInto(url, imageView);
             --i;
             --mCurIndex;
-            scrollBy(0,-imageView.getHeight());
         }
 
         while(mImageViewList.size() > PAGESIZE * 2) {
@@ -153,9 +153,9 @@ public class MyScrollView extends ScrollView {
         @Override
         public void onScrollChanged(int l, int t, int oldl, int oldt) {
             Log.d(TAG,t+"/  "+getHeight()  +"/  "+mContainer.getHeight() + "/  "+(t + getHeight()-mContainer.getHeight()));
-            if(t + getHeight()+50 >= mContainer.getHeight() ){
+            if(t + getHeight()+800 >= mContainer.getHeight() ){
                 mScrollToBottom = true;
-            }else if(t == 0){
+            }else if(t <= 400){
                 Log.d(TAG,"onScrollChanged ===top");
                 mScrollToTop = true;
             }
@@ -178,10 +178,10 @@ public class MyScrollView extends ScrollView {
         if(ev.getAction() == MotionEvent.ACTION_UP)
         if ( mScrollToBottom){
             mScrollToBottom = false;
-            loadMoreImages(2,true);
+            loadMoreImages(3,true);
         }else if(mScrollToTop){
             mScrollToTop = false;
-            loadMoreImages(2,false);
+            loadMoreImages(3,false);
         }
         return super.onTouchEvent(ev);
     }

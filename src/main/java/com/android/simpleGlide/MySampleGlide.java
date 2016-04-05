@@ -100,6 +100,9 @@ public class MySampleGlide {
             byte[] fileBytes = null;
             try
             {
+                if(null == response || !response.isSuccessful()){
+                    return;
+                }
                 fileBytes = response.body().bytes();
 
                 BitmapFactory.Options ops = new BitmapFactory.Options();

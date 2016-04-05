@@ -15,11 +15,11 @@ import com.android.list.BaseListItemHolder;
  * @author andy.liu 
  * we use one adapter for all the list view,so we should have different list view itemholder
  */
-public class ListViewAdapter extends BaseAdapter {
+public class ListViewAdapter<Source> extends BaseAdapter {
     /*
      * mListResource : the resource of listview item mListItemHolder: the item of listview
      */
-    private ArrayList<Object> mListResource;
+    private ArrayList<Source> mListResource;
 
     private LayoutInflater mInflater;
 
@@ -35,7 +35,7 @@ public class ListViewAdapter extends BaseAdapter {
         this.mListItemHolder = listItemHolder;
     }
 
-    public void setListResource(ArrayList<Object> listItem) {
+    public void setListResource(ArrayList<Source> listItem) {
         if (listItem != mListResource && null != mListResource) {
             mListResource.clear();
         }
@@ -51,9 +51,9 @@ public class ListViewAdapter extends BaseAdapter {
 
     }
 
-    public void addListItem(Object obj) {
+    public void addListItem(Source obj) {
         if (mListResource == null) {
-            mListResource = new ArrayList<Object>();
+            mListResource = new ArrayList<Source>();
         }
         mListResource.add(obj);
     }
@@ -77,7 +77,7 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Source getItem(int position) {
 
         if (mListResource != null && position < mListResource.size()) {
             return mListResource.get(position);

@@ -1,6 +1,5 @@
 package com.android.hellotest;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,21 +13,21 @@ import com.android.list.PicRecyclerSource;
 import com.android.list.RecyclerItemFactory;
 import com.android.list.RecyclerViewAdapter;
 import com.android.list.TestListItemHolder;
+import com.android.slidingMenu.SlidingMenuFragment;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
+
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends SlidingActivity implements SlidingMenuFragment.OnLoadMathSelectedListener {
     private String TAG = "liuy";
     private ListView mLv;
-    private ListViewAdapter mAdapter;
+    private ListViewAdapter mListAdapter;
     private TestListItemHolder mHodler;
-
+    private ArrayList<String> mArrays;
     private MyScrollView mScrollView;
-
-
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
-
-    private ArrayList<Object> mArrays;
 
     private ArrayList<BaseRecyclerSource> mRecyclerSources;
     public static String[] eatFoodyImages = {
@@ -100,32 +99,88 @@ public class MainActivity extends Activity {
             "http://img.my.csdn.net/uploads/201308/31/1377949442_4562.jpg"
 };
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHodler = new TestListItemHolder(this,R.layout.list_item);
-        mAdapter = new ListViewAdapter(this,mHodler);
-        mArrays = new ArrayList<Object>();
+        mArrays = new ArrayList<String>();
         mRecyclerSources = new ArrayList<BaseRecyclerSource>();
         for(String uri : eatFoodyImages){
             mArrays.add(uri);
             mRecyclerSources.add(new PicRecyclerSource(uri, PicRecyclerItemHolder.TYPE.PIC_TYPE));
         }
-        mAdapter.setListResource(mArrays);
+
+        initMenu();
+        initView();
+    }
+
+    private SlidingMenu mSlidingMenu;
+
+    protected void initMenu(){
+        setBehindContentView(R.layout.left_menu_frame);
+        mSlidingMenu = getSlidingMenu();
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+//        mSlidingMenu.
+//        mSlidingMenu.
+//        mSlidingMenu.
+
+        SlidingMenuFragment fragment = new SlidingMenuFragment();
+        fragment.setSelectedListener(this);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.menu_frame, fragment).commit();
+    }
+
+    protected void initView(){
+        mHodler = new TestListItemHolder(this,R.layout.list_item);
+        mListAdapter = new ListViewAdapter(this,mHodler);
+        mListAdapter.setListResource(mArrays);
 
         mLv = (ListView)findViewById(R.id.list);
-//        mLv.setAdapter(mAdapter);
         mLv.setVisibility(View.GONE);
 
         mScrollView = (MyScrollView)findViewById(R.id.scrollView);
         mScrollView.setVisibility(View.GONE);
-//        mScrollView.initView(mArrays);
 
         mRecyclerViewAdapter = new RecyclerViewAdapter(this, RecyclerItemFactory.RecyclerViewHolderType.PIC_VIEWHOLDER_TYPE);
         mRecyclerViewAdapter.setListResource(mRecyclerSources);
         mRecyclerView = (RecyclerView)findViewById(R.id.id_recyclerview);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setVisibility(View.GONE);
+
+        findViewById(R.id.hello).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSlidingMenu.toggle();
+            }
+        });
+    }
+
+    @Override
+    public void onLVSelected() {
+        mLv.setAdapter(mListAdapter);
+        mLv.setVisibility(View.VISIBLE);
+
+        mScrollView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onCUSelected() {
+        mScrollView.initView(mArrays);
+        mScrollView.setVisibility(View.VISIBLE);
+
+        mLv.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRESelected() {
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setVisibility(View.VISIBLE);
+
+        mScrollView.setVisibility(View.GONE);
+        mLv.setVisibility(View.GONE);
     }
 }

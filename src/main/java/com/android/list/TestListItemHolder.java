@@ -11,7 +11,7 @@ import com.android.simpleGlide.MySampleGlide;
 /**
  * Created by andyliu on 2016/3/21.
  */
-public class TestListItemHolder extends BaseListItemHolder {
+public class TestListItemHolder extends BaseListItemHolder<String> {
     private int mLayoutId;
     private ImageView mIm;
     private Context mCtx;
@@ -36,12 +36,12 @@ public class TestListItemHolder extends BaseListItemHolder {
     }
 
     @Override
-    public void setViewResource(Object obj) {
+    public void setViewResource(String source) {
 //        Glide
 //                .with(mCtx)
 //                .load((String)obj)
 //                .placeholder(R.drawable.camera_mode)
 //                .into(mIm);
-        MySampleGlide.getInstance(mCtx).loadInto((String)obj,mIm);
+        MySampleGlide.getInstance(mCtx).loadInto(source,mIm);
     }
 }
