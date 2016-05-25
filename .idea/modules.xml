@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/StudioPro.iml" filepath="$PROJECT_DIR$/StudioPro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gltest/gltest.iml" filepath="$PROJECT_DIR$/gltest/gltest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hellotest/hellotest.iml" filepath="$PROJECT_DIR$/hellotest/hellotest.iml" />
+    </modules>
+  </component>
+</project>
